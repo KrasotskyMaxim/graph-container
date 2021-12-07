@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "Graph.h"
+#include "Menu.h"
 
 using namespace std;
 
@@ -14,15 +15,17 @@ int main()
 	graph.add_arc(1, 2);
 	graph.add_arc(2, 1);
 	graph.add_arc(1, 0);
-	
 	/*graph.show_graph();
 	graph.delete_arc(1, 2);
 	graph.show_graph();*/
 
-	Graph<string> graph2(graph);
+	Graph<string>::node_iterator it;
 
-	bool is = graph == graph2;
-	cout << is;
+	it = graph.node_begin();
+	//Graph<string> graph2(graph);
+
+	/*bool is = graph == graph2;
+	cout << is;*/
 
 	return 0;
 }

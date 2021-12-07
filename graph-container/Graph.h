@@ -5,7 +5,6 @@
 
 using namespace std;
 
-
 #define MATRIX_SIZE 50
 #define NO_NODE "Node doest`t exists!"
 #define NO_ARC "Arc doesn`t exists!"
@@ -60,8 +59,8 @@ class Graph
 	};
 
 
-	vector<Node<T>> nodes;
-	vector<Arc<T>> arcs;
+	/*vector<Node<T>> nodes;
+	vector<Arc<T>> arcs;*/
 	vector<vector<int>> matrix;
 
 	int node_counter;
@@ -72,7 +71,82 @@ class Graph
 	void clear_matrix();
 	static void copy_matrix(vector<vector<int>>& matrix1, vector<vector<int>>& matrix2);
 	static bool compare_by_matrix(const Graph<T> &graph1, const Graph<T>& graph2);
+
+
+	vector<Node<T>> nodes;
+	vector<Arc<T>> arcs;
 public:
+	template <class T>
+	class GraphIterator
+	{
+		vector<typename T::iterator> ptr;
+		bool reverse;
+	public:
+		GraphIterator(bool reverse = false) 
+		{
+			this->reverse = reverse;
+		}
+		~GraphIterator() {}
+
+		void operator=(T* ptr) {
+			this->ptr = ptr;
+		}
+		T* operator+(int n) {
+			if (!this->reverse) {
+				return this->ptr + n;
+			}
+			else {
+				return this->ptr - n;
+			}
+		}
+		T* operator-(int n) {
+			if (!this->reverse) {
+				return this->ptr - n;
+			}
+			else {
+				return this->ptr + n;
+			}
+		}
+		T* operator++(int) {
+			if (!this->reverse) {
+				return this->ptr++;
+			}
+			else {
+				return this->ptr--;
+			}
+		}
+		T* operator--(int) {
+			if (!this->reverse) {
+				return this->ptr--;
+			}
+			else {
+				return this->ptr++;
+			}
+		}
+		T* operator++() {
+			if (!this->reverse) {
+				return ++this->ptr;
+			}
+			else {
+				return --this->ptr;
+			}
+		}
+		T* operator--() {
+			if (!this->reverse) {
+				return --this->ptr;
+			}
+			else {
+				return ++this->ptr;
+			}
+		}
+		bool operator!=(GraphIterator& it) { return this->ptr != it.ptr; }
+		bool operator==(GraphIterator& it) { return this->ptr == it.ptr; }
+		T& operator*() { return *this->ptr; }
+	};
+
+	typedef GraphIterator<Graph<T>::Node<T>> node_iterator;
+	typedef GraphIterator<Graph<T>::Arc<T>> arc_iterator;
+
 	Graph()
 	{
 		this->node_counter = 0;
@@ -84,7 +158,7 @@ public:
 			for (size_t j = 0; j < MATRIX_SIZE; ++j)
 				temp.push_back(0);
 			this->matrix.push_back(temp);
-		}	
+		}
 	}
 
 	Graph(Graph<T>& graph)
@@ -140,6 +214,15 @@ public:
 	bool operator<(Graph<T>& graph);
 	bool operator>=(Graph<T>& graph);
 	bool operator<=(Graph<T>& graph);
+
+	template <class T>
+	vector<typename Node<T>::iterator> node_begin() { return this->nodes.begin(); }
+	template <class T>
+	vector<typename Node<T>::iterator> node_end() { return this->nodes.end(); }
+	template <class T>
+	vector<typename Arc<T>::iterator> arc_begin() { return this->arcs.begin(); }
+	template <class T>
+	vector<typename Arc<T>::iterator> arc_end() { return this->arcs.end(); }
 };
 
 
