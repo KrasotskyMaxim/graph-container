@@ -5,27 +5,24 @@
 
 using namespace std;
 
+typedef string val_type;
+
 
 int main()
 {
-	Graph<string> graph;
-	graph.add_node("a");
-	graph.add_node("b");
-	graph.add_node("c");
-	graph.add_arc(1, 2);
-	graph.add_arc(2, 1);
-	graph.add_arc(1, 0);
-	/*graph.show_graph();
-	graph.delete_arc(1, 2);
-	graph.show_graph();*/
+	Graph<val_type> graph;
+	menu(graph);
 
-	Graph<string>::node_iterator it;
 
-	it = graph.node_begin();
-	//Graph<string> graph2(graph);
+	Graph<val_type> graph2;
+	menu(graph2);
 
-	/*bool is = graph == graph2;
-	cout << is;*/
 
 	return 0;
+}
+
+std::ostream& operator<<(std::ostream& out, Graph<val_type>& graph)
+{
+	graph.show_graph();
+	return out;
 }

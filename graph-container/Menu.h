@@ -4,7 +4,6 @@
 #include "Graph.h"
 using namespace std;
 
-typedef string val_type;
 
 enum KEYS
 {
@@ -21,28 +20,22 @@ enum KEYS
 	NODE_DATA = 5,
 	NODE_DEGREE = 55,
 	SHOW = 100,
+	CLEAR_CONSOLE = -100,
 	EXIT = -1
 };
 
-Graph<val_type> menu(Graph<val_type> &graph)
-{
-	cout << "0. clear graph\n"
-		<< "10. is empty\n"
-		<< "1. Add node\n"
-		<< "11. Delete node\n"
-		<< "2. Add arc\n"
-		<< "22. Delete arc\n"
-		<< "3. Get adjance nodes\n"
-		<< "33. Get incidence arcs\n"
-		<< "4. Is node exists\n"
-		<< "44. Is arc exists\n"
-		<< "5. Get node data\n"
-		<< "55. Get node degree\n"
-		<< "100. Show graph\n"
-		<< "-1. Exit\n";
+template <typename T2>
+void comparing(Graph<T2>& graph, Graph<T2>& graph2);
+void menu_logo();
+void show_arc_it(pair<int, int>& it);
+void show_arc_it(const pair<int, int>& it);
 
+template <typename T1>
+Graph<T1> menu(Graph<T1> &graph)
+{	
+	menu_logo();
 	int key, number, choose;
-	val_type data;
+	T1 data;
 	while (true)
 	{
 		f0:
@@ -62,19 +55,21 @@ Graph<val_type> menu(Graph<val_type> &graph)
 			cout << "\nEnter data: ";
 			cin >> data;
 			graph.add_node(data);
+			break;
 		case ADD_ARC:
 			int begin, end;
 			cout << "\nEnter begin and end: ";
 			cin >> begin >> end;
 			graph.add_arc(begin, end);
+			break;
 		case DELETE_NODE:
 			f1:
 			int choose;
-			cout << "\nd - by data\nn - by number\nEnter: ";
+			cout << "\n0 - by data\n1 - by number\nEnter: ";
 			cin >> choose;
 			switch (choose)
 			{
-			case  0:
+			case 0:
 				cout << "\nEnter target data: ";
 				cin >> data;
 				graph.delete_node(data);
@@ -104,7 +99,7 @@ Graph<val_type> menu(Graph<val_type> &graph)
 			break;
 		case IS_NODE_EXISTS:
 			f2:
-			cout << "\nd - by data\nn - by number\nEnter: ";
+			cout << "\n0 - by data\n1 - by number\nEnter: ";
 			cin >> choose;
 			switch (choose)
 			{
@@ -113,14 +108,16 @@ Graph<val_type> menu(Graph<val_type> &graph)
 				cin >> data;
 				if (graph.is_node_exists(data))
 					cout << "\nYes\n";
-				else cout << "\nNo\n";
+				else 
+					cout << "\nNo\n";
 				break;
 			case 1:
 				cout << "\nEnter node number: ";
 				cin >> number;
 				if (graph.is_node_exists(number))
 					cout << "\nYes\n";
-				else cout << "\nNo\n";
+				else 
+					cout << "\nNo\n";
 				break;
 			default:
 				cout << "\nIncorrect input!\n";
@@ -130,7 +127,7 @@ Graph<val_type> menu(Graph<val_type> &graph)
 			break;
 		case IS_ARC_EXISTS:
 			f3:
-			cout << "\nd - begin - end\nn - by number\nEnter: ";
+			cout << "\n0 - begin - end\n1 - by number\nEnter: ";
 			cin >> choose;
 			switch (choose)
 			{
@@ -140,14 +137,16 @@ Graph<val_type> menu(Graph<val_type> &graph)
 				cin >> begin >> end;
 				if (graph.is_arc_exists(begin, end))
 					cout << "\nYes\n";
-				else cout << "\nNo\n";
+				else 
+					cout << "\nNo\n";
 				break;
 			case 1:
 				cout << "\nEnter node number: ";
 				cin >> number;
 				if (graph.is_arc_exists(number))
 					cout << "\nYes\n";
-				else cout << "\nNo\n";
+				else 
+					cout << "\nNo\n";
 				break;
 			default:
 				cout << "\nIncorrect input!\n";
@@ -158,17 +157,21 @@ Graph<val_type> menu(Graph<val_type> &graph)
 		case NODE_DATA:
 			cout << "\nEnter node number: ";
 			cin >> number;
-			cout << "\ndata: " << graph.get_node_data(number);
+			cout << "\ndata: " << graph.get_node_data(number) << endl;
 			break;
 		case NODE_DEGREE:
 			cout << "\nEnter node number: ";
 			cin >> number;
-			cout << "\nnode degree: " << graph.get_node_degree(number);
+			cout << "\nnode degree: " << graph.get_node_degree(number) << endl;
 			break;
 		case SHOW:
-			graph.show_graph();
+			cout << graph;
 			break;
-		case -1:
+		case CLEAR_CONSOLE:
+			system("cls");
+			menu_logo();
+			break;
+		case EXIT:
 			return graph;
 		default:
 			cout << "\nIncorrect input!\n";
@@ -176,4 +179,47 @@ Graph<val_type> menu(Graph<val_type> &graph)
 			break;
 		}
 	}
+}
+
+
+void menu_logo()
+{
+	cout << "\n0. clear graph\n"
+		<< "10. is empty\n"
+		<< "1. Add node\n"
+		<< "11. Delete node\n"
+		<< "2. Add arc\n"
+		<< "22. Delete arc\n"
+		<< "3. Get adjance nodes\n"
+		<< "33. Get incidence arcs\n"
+		<< "4. Is node exists\n"
+		<< "44. Is arc exists\n"
+		<< "5. Get node data\n"
+		<< "55. Get node degree\n"
+		<< "100. Show graph\n"
+		<< "-100. clear console\n"
+		<< "-1. Exit\n";
+}
+
+inline void show_arc_it(pair<int, int>& it)
+{
+	cout << endl << it.first << " -> " << it.second << endl;
+}
+
+inline void show_arc_it(const pair<int, int>& it)
+{
+	cout << endl << it.first << " -> " << it.second << endl;
+}
+
+template <typename T2>
+void comparing(Graph<T2>& graph, Graph<T2>& graph2)
+{
+	cout << "\ncompairing graph1 and graph2:\t";
+	cout << (graph == graph2)
+		<< "\t" << (graph != graph2)
+		<< "\t" << (graph > graph2)
+		<< "\t" << (graph < graph2)
+		<< "\t" << (graph >= graph2)
+		<< "\t" << (graph <= graph2);
+	cout << endl << endl;
 }
